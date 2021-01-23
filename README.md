@@ -1,4 +1,4 @@
-# generic-api
+# generic-api upgraded in 2021
 ASP.NET Core generic API controller and GraphQL endpoint (prototype)
 
 In 2021 unable to push it higher then standardnet 2.0 and core 2.1
