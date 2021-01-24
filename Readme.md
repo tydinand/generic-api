@@ -9,7 +9,7 @@
 >- GenricController as a function GetPosts. 
 This specific funtion is now available on all repositories.
 
->- Added post controller to show how to can extend one (post) repository with specific funtions. 
+>- Added post controller to show how to extend one (post) repository with specific funtions. 
 
  	
 Good luke with this code example.
