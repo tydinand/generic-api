@@ -6,7 +6,11 @@
 
 >- The generic repository is changed with a more worked-out version. 
 
->- I added a post controller to show how you can extend the GenericController with specific funtions. 
+>- GenricController as a function GetPosts. 
+This specific funtion is now available on all repositories.
+
+>- Added post controller to show how to can extend one (post) repository with specific funtions. 
+
  	
 Good luke with this code example.
 
