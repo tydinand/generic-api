@@ -15,15 +15,17 @@ This specific funtion is now available on all repositories.
 Create a new project in VS (Apsnet core web application => name => Asp.net core web API => create).\
 Build and test. See swagger page with get/WeatherForecast and see the results after execute.
 
+Add from nuget: Microsoft.EntityFrameworkCore
+
 Copy into your project:
 - 3 files (GenericControllerExtensions.cs, GenericControllerAttribute.cs, GenericControllerApplicationPart.cs from Extensions
 - repository.cs from Models/Repository and ApplicationEntity.cs from Models
 
 - Create models (or take from this github) and let them inherrit from ApplicationEntity
-- Create a applicationDBContext (or take from this github) and 
+- Create a applicationDBContext (or take from this github) and add every modelclass as property (example `code` public DbSet<Post> Posts { get; set; }`code`)
 - Take care of the reference errors
 
-*ApplicationEntity.cs is a common class of properties that can be used in your generic-repository as property*
+*ApplicationEntity.cs is a common class of properties that can be used in your generic-repository as property. At least a field like Id must be in it*
 
 Add in Startup.cs in section ConfigureServices above addswaggerGen:
 -  services.AddTransient(typeof(IRepository<>), typeof(Repository<>));
@@ -40,7 +42,40 @@ Create a new api controller.\
         }\
 `code`
 
+Add a function into this controller like
+`code`
+[HttpGet("{Id}")]
+        public async Task<T> Get(int Id) 
+        {
+            return await repository.GetById(Id);
+        }
+`code`
+
 Fix all references and test your code. 
+
+You should see all modelclasses named each with the functions from the GenericController.\
+
+## Add specific function for each modelclass
+If you want every ModelClass to have a specific function you can add this function into the genericController for example.\
+`code`
+[HttpGet("GetPosts/{Id}")]
+        public async Task<string> GetPosts(int Id, string search= null, bool active = false, bool includsComments = false)
+        {
+           var result = (await postRepository.GetAllInclude(x => x.Include(p => p.Comments)))
+                    .Where(x => (includsComments ? x.Comments?.Count > 0 : x.Id != 1) && (search != null ? x.Title.ToLower().Contains(search.ToLower()) : x.Id != -1)).ToList();
+            JsonConvert.DefaultSettings = () => new JsonSerializerSettings
+            {
+                PreserveReferencesHandling = PreserveReferencesHandling.All,
+                ReferenceLoopHandling = ReferenceLoopHandling.Serialize
+            };
+            return JsonConvert.SerializeObject(result);
+        }
+`code`
+
+You will be able to call GetPosts/{Id} from every api-repository call. 
+
+## Function on one repos only(Need to make) 
+**need to make**
 
 Good luke with this code example.
 
