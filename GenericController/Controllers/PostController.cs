@@ -1,4 +1,5 @@
 ﻿using GenericController.API.Models;
+using GenericController.API.Models.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -18,10 +19,12 @@ namespace GenericController.Controllers
         };
 
         private readonly ILogger<WeatherForecastController> _logger;
+        private readonly IRepository<Post> repository;
 
-        public PostController(ILogger<WeatherForecastController> logger)
+        public PostController(ILogger<WeatherForecastController> logger, IRepository<Post> repository)
         {
             _logger = logger;
+            this.repository = repository;
         }
 
         // Functions in this class will only available for post class requests.
@@ -37,10 +40,17 @@ namespace GenericController.Controllers
             })
             .ToArray();
         }
-        [HttpGet("GetPost/{id}")]
-        public IEnumerable<Post> GetWeather(int id)
+
+        [HttpGet("GetNewPostbyId/{id}")]
+        public Post GetNewPostbyId(int id)
         {
-            return new List<Post>();
+            // return example code use repository. (comment out by the lack of a Database)
+            //return repository.GetById(id);
+
+            //Return example code json (nuget newtonsoft.json and add {using newtonsoft.json}
+            //var result = repository.GetById(id);
+            //JsonConvert.SerializeObject(result);
+            return new Post();
         }
     }
 }
