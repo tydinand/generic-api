@@ -1,3 +1,8 @@
+=> notice 
+
+The description below has some problems with the view in markdown. Please check raw code, else you end up in an error, instead of nice functionality.
+=>
+
 # Generic API .net 5
 
 ###### This Generic API is created out of the original version from https://github.com/matjazmav/generic-api
@@ -22,33 +27,77 @@ Copy into your project:
 - repository.cs from Models/Repository and ApplicationEntity.cs from Models
 
 - Create models (or take from this github) and let them inherrit from ApplicationEntity
-- Create a applicationDBContext (or take from this github) and add every modelclass as property (example `code` public DbSet<Post> Posts { get; set; }`code`)
+- Create a applicationDBContext (or take from this github) and add every modelclass as property (example 
+
+`code` 
+
+=> look into the raw md code
+
+public DbSet<Post> Posts { get; set; }
+
+`code`
+)
 - Take care of the reference errors
 
 *ApplicationEntity.cs is a common class of properties that can be used in your generic-repository as property. At least a field like Id must be in it*
 
 Add in Startup.cs in section ConfigureServices above addswaggerGen:
+
+=> look into the raw md code
+
 -  services.AddTransient(typeof(IRepository<>), typeof(Repository<>));
+
+=> look into the raw md code
+
 -  services.AddControllers().AddGenericControllers<ApplicationDbContext, ApplicationEntity>(typeof(GenericController<>));
 
 Add your model classes (or take from this github).\
 Create a new api controller.\
-- Change the classline into `code` public class GenericController<T> : Controller where T : ApplicationEntity `code`
-- Add above the contructor `code` private readonly IRepository<T> repository; `code`
-- Change the contructor into \
-`code` public GenericController(IRepository<T> repository)\
-        {\
-            this.repository = repository;\
-        }\
+- Change the classline into 
+
+`code` 
+
+=> look into the raw md code
+
+public class GenericController<T> : Controller where T : ApplicationEntity 
+
+`code`
+- Add above the contructor 
+
+`code` 
+
+=> look into the raw md code
+
+private readonly IRepository<T> repository; 
+
+`code`
+- Change the contructor into
+
+`code` 
+
+=> look into the raw md code
+
+public GenericController(IRepository<T> repository)
+        
+        {
+            this.repository = repository;
+        }
+        
 `code`
 
 Add a function into this controller like
+
 `code`
+
 [HttpGet("{Id}")]
+
+=> look into the raw md code
+
         public async Task<T> Get(int Id) 
         {
             return await repository.GetById(Id);
         }
+
 `code`
 
 Fix all references and test your code. 
@@ -56,20 +105,26 @@ Fix all references and test your code.
 You should see all modelclasses named each with the functions from the GenericController.\
 
 ## Add specific function for each modelclass
-If you want every ModelClass to have a specific function you can add this function into the genericController for example.\
+If you want every ModelClass to have a specific function you can add this function into the genericController for example.
+
 `code`
-[HttpGet("GetPosts/{Id}")]\
-        public async Task<string> GetPosts(int Id, string search= null, bool active = false, bool includsComments = false)\
-        {\
-           var result = (await postRepository.GetAllInclude(x => x.Include(p => p.Comments)))\
-                    .Where(x => (includsComments ? x.Comments?.Count > 0 : x.Id != 1) && (search != null ? x.Title.ToLower().Contains(search.ToLower()) : x.Id != -1)).ToList();\
-            JsonConvert.DefaultSettings = () => new JsonSerializerSettings\
-            {\
-                PreserveReferencesHandling = PreserveReferencesHandling.All,\
-                ReferenceLoopHandling = ReferenceLoopHandling.Serialize\
-            };\
-            return JsonConvert.SerializeObject(result);\
-        }\
+
+[HttpGet("GetPosts/{Id}")]
+
+=> look into the raw md code
+
+        public async Task<string> GetPosts(int Id, string search= null, bool active = false, bool includsComments = false)
+        {
+           var result = (await postRepository.GetAllInclude(x => x.Include(p => p.Comments)))
+                    .Where(x => (includsComments ? x.Comments?.Count > 0 : x.Id != 1) && (search != null ? x.Title.ToLower().Contains(search.ToLower()) : x.Id != -1)).ToList();
+            JsonConvert.DefaultSettings = () => new JsonSerializerSettings
+            {
+                PreserveReferencesHandling = PreserveReferencesHandling.All,
+                ReferenceLoopHandling = ReferenceLoopHandling.Serialize
+            };
+            return JsonConvert.SerializeObject(result);
+        }
+        
 `code`
 
 You will be able to call GetPosts/{Id} from every api-repository call. 
@@ -84,17 +139,39 @@ The GetNewPostbyId function is only available in the post repository.
 ## Create a Repository
 - Add a new controller into your project with the name of your model ({ModelName}Controller.cs.
 - Let the controller inherrit from controllerBase insteat of controller.
-- Leave `code` \
-[ApiController]\
-[Route("[controller]")] \
-`code` as it is.
-- Reference to a Model can be directly to the generic repository. You even benefit from all the function in it and don't need to register the Repository in the startup. \
- `code` IRepository<{Modelname}> repository `code`
-- Add `code` [HttpGet("{Functionname}/{{Parameters}}"] `code` (only required parameter must be asked between {}).
+- Leave 
+
+`code` 
+
+[ApiController]
+
+[Route("[controller]")] 
+
+`code` 
+
+as it is.
+- Reference to a Model can be directly to the generic repository. You even benefit from all the function in it and don't need to register the Repository in the startup. 
+
+ `code` 
+ 
+ => look into the raw md code
+ 
+ IRepository<{Modelname}> repository 
+ 
+ `code`
+ 
+- Add 
+
+`code`
+
+[HttpGet("{Functionname}/{{Parameters}}"] 
+
+`code` 
+
+(only required parameter must be asked between {}).
 - Add Function
 - By returning you maybe need to Json it. See example in the post controller. 
 
 Good luke with this code example.
 
 Dinand
-
