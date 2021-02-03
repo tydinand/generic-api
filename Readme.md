@@ -82,6 +82,7 @@ Add a function into this controller like
 Fix all references and test your code. 
 
 You should see all modelclasses named each with the functions from the GenericController.\
+In the example all modelclasses should have the function Get(int Id).
 
 ## Add specific function for each modelclass
 If you want every ModelClass to have a specific function you can add this function into the genericController for example.
