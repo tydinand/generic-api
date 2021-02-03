@@ -146,6 +146,6 @@ as it is.
 - Add Function
 - By returning you maybe need to Json it. See example in the post controller. 
 
-Good luke with this code example.
+Keep coding.
 
 Dinand
