@@ -1,8 +1,8 @@
 # Generic API .net 5
 
-###### This Generic API is created out of the original version from https://github.com/matjazmav/generic-api
+###### This Generic API is a rebuild of the original version from https://github.com/matjazmav/generic-api
 
-* The basic application is a default web-api project in VS. *
+>- The basic application is a default web-api project in VS.
 
 >- The generic repository is changed with a more worked-out version. 
 
