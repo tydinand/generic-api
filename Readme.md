@@ -7,7 +7,7 @@
 >- The generic repository is changed with a more worked-out version. 
 
 >- GenericController as a function GetPosts. 
-This specific funtion is now available on all repositories.
+This example funtion is available on all repositories.
 
 >- Added post controller to show how to extend one (post) repository with specific funtions. 
 
