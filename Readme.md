@@ -85,7 +85,24 @@ You should see all modelclasses named each with the functions from the GenericCo
 In the example all modelclasses should have the function Get(int Id).
 
 ## Add specific function for each modelclass
-If you want every ModelClass to have a specific function you can add this function into the genericController for example.
+If you want every ModelClass to have a specific function you can add this function into the genericController. Example.
+
+Add to the contructor call  IRepository<Post> postRepository like
+
+`code`
+
+        private readonly IRepository<T> repository; 
+        private readonly IRepository<Post> postRepository; 
+
+        public GenericController(IRepository<T> repository, IRepository<Post> postRepository)
+         {
+            this.repository = repository;
+            this.postRepository = postRepository;
+        }
+        
+`code`
+
+Then write your function like
 
 `code`
 
@@ -105,6 +122,7 @@ If you want every ModelClass to have a specific function you can add this functi
 `code`
 
 You will be able to call GetPosts/{Id} from every api-repository call. 
+Debug and test it to see.
 
 ## Extend one Repository with functions
 
