@@ -24,12 +24,7 @@ Copy into your project:
 - Create models (or take from this github) and let them inherrit from ApplicationEntity
 - Create a applicationDBContext (or take from this github) and add every modelclass as property. Example 
 
-`code` 
-
-        public DbSet<Post> Posts { get; set; }
-        
-`code`
-
+        public DbSet<Post> Posts { get; set; }      
 - Take care of the reference errors
 
 *ApplicationEntity.cs is a common class of properties that can be used in your generic-repository as property. At least a field like Id must be in it*
@@ -44,40 +39,24 @@ Add your model classes (or take from this github).\
 Create a new api controller.
 - Change the classline into 
 
-`code` 
-
         public class GenericController<T> : Controller where T : ApplicationEntity 
-
-`code`
 - Add above the contructor 
 
-`code` 
-
         private readonly IRepository<T> repository; 
-
-`code`
 - Change the contructor into
-
-`code` 
 
         public GenericController(IRepository<T> repository)        
         {
             this.repository = repository;
         }
-        
-`code`
 
 Add a function into this controller like
-
-`code`
 
         [HttpGet("{Id}")]
         public async Task<T> Get(int Id) 
         {
             return await repository.GetById(Id);
         }
-
-`code`
 
 Fix all references and test your code. 
 
@@ -89,8 +68,6 @@ If you want every ModelClass to have a specific function you can add this functi
 
 Add to the contructor call  IRepository<Post> postRepository like
 
-`code`
-
         private readonly IRepository<T> repository; 
         private readonly IRepository<Post> postRepository; 
 
@@ -100,11 +77,7 @@ Add to the contructor call  IRepository<Post> postRepository like
             this.postRepository = postRepository;
         }
         
-`code`
-
 Then write your function like
-
-`code`
 
         [HttpGet("GetPosts/{Id}")]
         public async Task<string> GetPosts(int Id, string search= null, bool active = false, bool includsComments = false)
@@ -118,8 +91,6 @@ Then write your function like
             };
             return JsonConvert.SerializeObject(result);
         }
-        
-`code`
 
 You will be able to call GetPosts/{Id} from every api-repository call. 
 Debug and test it to see.
@@ -132,37 +103,36 @@ Be aware to have different functionNames and paths then already used or generate
 The GetNewPostbyId function is only available in the post repository.
 
 ## Create a Repository
-- Add a new controller into your project with the name of your model ({ModelName}Controller.cs.
+- Add a new Api controller into your project with the _name of your model_ ({ModelName}Controller.cs.
 - Let the controller inherrit from controllerBase insteat of controller.
 - Leave 
-
-`code` 
 
         [ApiController]
         [Route("[controller]")] 
 
-`code` 
-
 as it is.
-- Reference to a Model can be directly to the generic repository. You even benefit from all the function in it and don't need to register the Repository in the startup. 
+- Reference to a Model can be directly to the generic repository. You even benefit from all the functions in it and don't need to register the Repository in the startup. 
 
- `code` 
- 
-        IRepository<{Modelname}> repository 
- 
- `code`
- 
-- Add 
+        Private IRepository<{Modelname}> {Modelname}Repository; 
 
-`code`
+Into the constructor of the controller
 
-        [HttpGet("{Functionname}/{{Parameters}}"] 
+        IRepository<{Modelname}> {Modelname}Repository 
+and in the body of the constructor        
+        
+        this.{Modelname}Repository = {Modelname}Repository ;
+        
+- Add a Function
 
-`code` 
+- Add your data annotation above the function
 
-(only required parameter must be asked between {}).
-- Add Function
+        [HttpGet("{Functionname}/{Parameters1}/{Parameters2}"] 
+
+(only required parameters must be asked between {}).
+
 - By returning you maybe need to Json it. See example in the post controller. 
+
+With swash buckle, you see the request string after a succesful request.
 
 Keep coding.
 
